@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+
+<meta http-equiv="CONTENT-TYPE"
+	content="text/html; charset=windows-1252">
+<title></title>
+
+
+<meta name="GENERATOR" content="OpenOffice.org 1.9.95 (Win32)">
+
+<meta name="AUTHOR" content="Terry Lacy">
+
+<meta name="CREATED" content="20050807;9342532">
+
+<meta name="CHANGEDBY" content="Terry Lacy">
+
+<meta name="CHANGED" content="20050911;10172293">
+
+<link rel="stylesheet" href="style.css" type="text/css">
+
+</head>
+
+
+<body style="direction: ltr;" lang="en-US">
+
+<p class="western" style="margin-bottom: 0in;">folaigh</p>
+
+<p class="western" style="margin-bottom: 0in;">Definition
+(Sainmh&iacute;ni&uacute;): to conceal;</p>
+
+<p class="western" style="margin-bottom: 0in;"><br>
+
+</p>
+
+<p class="western" style="margin-bottom: 0in;"><font
+	style="font-size: 16pt;" size="4"><b>Using Folaigh</b></font></p>
+
+<p class="western" style="margin-bottom: 0in;">Folaigh is a C# and Java
+library that provides encryption, integrity and authentication for
+communication between systems and applications. Folaigh is
+transport-neutral. You should be able to plug it into any transport
+mechanism, including web services, RPC or simple TCP/IP communication.</p>
+
+<p class="western" style="margin-bottom: 0in;">Folaigh encrypts and
+signs a method call that takes any number of string arguments and
+returns a string return value. The return value is also encrypted and
+signed. On receipt of a message or reply, Folaigh verifies the signature
+and decrypts the message.</p>
+
+<p class="western" style="margin-bottom: 0in;">To allow two parties to
+use Folaigh to communicate, they must agree on keys. Folaigh comes with
+the .NET application FolaighKeyManager. This application can be used to
+generate key stores for both parties. Folaigh uses standard PKCS#12 key
+stores. FolaighKeyManager produces two password-protected encrypted key
+stores; one for the client and one for the server.</p>
+
+<p class="western" style="margin-bottom: 0in;">Each user fills out the
+information in the &ldquo;Client&rdquo; or &ldquo;Server&rdquo; section.
+The &ldquo;client&rdquo; and &ldquo;server&rdquo; designations are
+somewhat arbitrary. Once each side has a key store, communication can go
+either way. You must fill out all of the fields to create keys. Once the
+fields are filled in, click &ldquo;Create Keystores&rdquo; and select a
+folder for the key stores. The key store files will be named according
+to the &ldquo;alias&rdquo; fields with a &ldquo;.p12&rdquo; extension.</p>
+
+<p class="western" style="margin-bottom: 0in;"><img
+	src="Folaigh_html_43ca3fbc.gif" name="graphics1" align="left"
+	border="0" height="422" width="662"><br clear="left">
+
+<br>
+
+</p>
+
+<p class="western" style="margin-bottom: 0in;">The client key store
+contains private and public keys for the client, and the public key of
+the server. The server key store contains private and public keys for
+the server, and the public key of the client. Folaigh uses 1024-bit RSA
+keys.</p>
+
+<p class="western" style="margin-bottom: 0in;">When a message is sent,
+Folaigh generates a 256-bit AES key. This key is used to encrypt the
+message. RSA keys are not appropriate for generating keys because RSA
+isn't good at encrypting long messages. The RSA keys are used to encrypt
+and decrypt the AES key, and to sign the message hash.</p>
+
+<p class="western" style="margin-bottom: 0in;">Here's the sequence of
+events for a Folaigh method call:</p>
+
+<ol start="1" style="list-style-type: decimal;">
+
+	<li>A client calls Folaigh's SecureTransport &ldquo;send&rdquo; method
+	with the method name and arguments.</li>
+
+	<li>Folaigh packages the method name and argument into an XML document
+	(henceforth the &ldquo;message&rdquo;).</li>
+
+	<li>Folaigh generates a 256-bit AES key.</li>
+
+	<li>Folaigh encrypts the message using the AES key.</li>
+
+	<li>Folaigh encrypts the AES key using the server's public key.</li>
+
+	<li>Folaigh hashes the message using SHA-256.</li>
+
+	<li>Folaigh signs (encrypts) the hash using the client's private key.</li>
+
+	<li>Folaigh sends the encrypted message, the encrypted AES key and the
+	signature to a client-provided &ldquo;proxy&rdquo; method.</li>
+
+	<li>This client's proxy method is responsible for getting these
+	parameters to the server.</li>
+
+	<li>On the server, the parameters are received.</li>
+
+	<li>The server passes the parameters to Folaigh's SecureTransport
+	&ldquo;receive&rdquo; method.</li>
+
+	<li>Folaigh verifies the signature using the client's public key. If
+	the signature is valid, continue with the steps below. Otherwise, bail
+	out here.</li>
+
+	<li>Folaigh decrypts the AES key using the server's private key.</li>
+
+	<li>Folaigh uses the decrypted AES key to decrypt the message.</li>
+
+	<li>Folaigh calls the server-provided stub method with the decrypted
+	message.</li>
+
+	<li>The server's stub method runs the called method and returns a
+	string (henceforth the &ldquo;reply&rdquo;).</li>
+
+	<li>Folaigh generates a 256-bit AES key.</li>
+
+	<li>Folaigh encrypts the reply using the AES key.</li>
+
+	<li>Folaigh encrypts the AES key using the client's public key.</li>
+
+	<li>Folaigh hashes the message using SHA-256.</li>
+
+	<li>Folaigh signs (encrypts) the hash using the server's private key.</li>
+
+	<li>Folaigh returns the encrypted message, the encrypted AES key and
+	the signature from SecureTransport's &ldquo;receive&rdquo; method.</li>
+
+	<li>The server sends the reply back to the client.</li>
+
+	<li>On the client, the reply is received.</li>
+
+	<li>The client-provided proxy method returns the encrypted reply back
+	to</li>
+
+	<li>Folaigh's SecureTransport &ldquo;send&rdquo; method.</li>
+
+	<li>Folaigh verifies the signature using the server's public key. If
+	the signature is valid, continue with the steps below. Otherwise, bail
+	out here.</li>
+
+	<li>Folaigh decrypts the AES key using the client's private key.</li>
+
+	<li>Folaigh uses the decrypted AES key to decrypt the reply.</li>
+
+	<li>Folaigh returns the decrypted reply back to the client from</li>
+
+	<li>Folaigh's SecureTransport &ldquo;send&rdquo; method.</li>
+
+</ol>
+
+<p class="western" style="margin-bottom: 0in;"><font size="4"><b>Setting
+Up the Proxy and Stub</b></font></p>
+
+<p class="western" style="margin-bottom: 0in;">To use Folaigh you must
+write proxy and stub code on the client and server.</p>
+
+<p class="western" style="margin-bottom: 0in;"><b>The ITransportProxy
+Interface</b></p>
+
+<p class="western" style="margin-bottom: 0in;">The <b>ITransportProxy</b>
+interface is used to send and receive calls between client and server.
+You must create a class that implements this interface, because it
+handles the details of whatever transport mechanism you've chosen. When
+you instantiate SecureTransport, you pass a reference to your class to
+SecureTransport's constructor.ITransportProxy has two methods:
+&ldquo;send&rdquo; and &ldquo;receive&rdquo;. The &ldquo;send&rdquo;
+method handles sending the encrypted message to the server. The
+&ldquo;receive&rdquo; method receives the decrypted message on the
+server.</p>
+
+<p class="western" style="margin-bottom: 0in;">If calls will be going
+both ways, you must implement both the &ldquo;send&rdquo; and
+&ldquo;receive&rdquo; method on both sides of the conversation.
+Otherwise, you only need to implement the &ldquo;send&rdquo; method on
+the side that sends calls, and the &ldquo;receive&rdquo; method on the
+side receiving them. You are free to implement the communication method
+any way you want.</p>
+
+<p class="western" style="margin-bottom: 0in;">Here's an example in
+Java:</p>
+
+<pre>class MyTransport implements ITransportProxy<br>{<br><br> String send(String message, String signature, String aesKey, String IV, String senderAlias) {<br> // Send the parameters to the server<br> // ...<br> }<br><br> String receive(boolean validSignature, MethodInfo methodInfo, String senderAlias) {<br> return myMethod(methodInfo.getArg(0), methodInfo.getArg(1));<br> }<br><br> String myMethod(arg1, arg2) {<br> String result;<br> // Do stuff<br> return result;<br> }<br>}<br><br><font
+	face="Times New Roman, serif"><font size="3">Here's one in VB.NET:</font></font><br>Public Class MyWebServiceProxy<br>Implements org.karmashave.folaigh.ITransportProxy<br>Public Function receive(ByVal validSignature As Boolean, ByVal methodInfo As org.karmashave.folaigh.MethodInfo, ByVal sender As String) As String Implements org.karmashave.folaigh.IWebServiceProxy.receive<br>Return myMethod(methodInfo.getArg(0), methodInfo.getArg(1))<br>End Function<br>Public Function send(ByVal message As String, ByVal signature As String, ByVal aesKey As String, ByVal IV As String, ByVal senderAlias As String) As String Implements org.karmashave.folaigh.IWebServiceProxy.send<br>End Function<br>Public Function myMethod(ByVal arg1 As String, ByVal arg2 As String) As String<br>Dim result As String<br>'Do Stuff<br>Return result<br>End Function<br>End Class</pre>
+
+<p class="western" style="margin-bottom: 0in;"><font
+	face="Times New Roman, serif"><font size="3">The example above shows
+&ldquo;myMethod&rdquo; in the transport class. In general, you'll want
+to put your methods in separate classes, especially if you've got more
+than one.</font></font></p>
+
+<p class="western" style="margin-bottom: 0in;"><font
+	face="Times New Roman, serif"><font size="3"><b>FolaighKeyStore</b></font></font></p>
+
+<p class="western" style="margin-bottom: 0in;"><font
+	face="Times New Roman, serif"><font size="3">Keys and certificates are
+stored in a PKCS#12 key store file. FolaighKeyStore encapsulates the
+file. You must create an instance of a FolaighKeyStore and pass it the
+name of your key store file and a password before creating RSA ciphers
+for your transport (see below).</font></font></p>
+
+<p class="western" style="margin-bottom: 0in;"><font
+	face="Times New Roman, serif"><font size="3"><b>RSACipher</b></font></font></p>
+
+<p class="western" style="margin-bottom: 0in;"><font
+	face="Times New Roman, serif"><font size="3">When instantiating the
+SecureTransport object, you must pass two RSACipher objects to the
+constructor. These objects handle AES key encryption and decryption, and
+message signing and verification.</font></font></p>
+
+<p class="western" style="margin-bottom: 0in;"><font
+	face="Times New Roman, serif"><font size="3">To create an RSACipher,
+you'll need the location of your key store file (the one you created
+with FolaighKeyManager), the alias of the key you want to use (this is
+the value you entered in the &ldquo;Alias&rdquo; field in
+FolaighKeyManager), and the password for the key store file. Avoid
+hard-coding passwords in source code. It is a security risk. Instead,
+your application should have a place where the user can enter the
+password in a field when starting your application.</font></font></p>
+
+<p class="western" style="margin-bottom: 0in;"><font
+	face="Times New Roman, serif"><font size="3">Here's an example of
+creating the RSACiphers and creating a SecureTransport object in java:</font></font></p>
+
+<pre>TestWebServiceProxy testProxy = new TestWebServiceProxy();<br>ITransportProxy proxy = testProxy;<br>RSACipher encryptorVerifier = null;<br>RSACipher signerDecryptor = null;<br>keyStore = new FolaighKeyStore(myKeyStore, password.toCharArray());<br>try {<br> encryptorVerifier = new RSACipher(keyStore, "theirKey", false);<br> signerDecryptor = new RSACipher(keyStore, "myKey", true);<br>} catch (Exception e) {<br> e.printStackTrace();<br> // ...<br>}<br>SecureTransport transport = null;<br>try {<br> transport = new SecureTransport(proxy, encryptorVerifier,<br> signerDecryptor);<br>} catch (Exception e1) {<br> e1.printStackTrace();<br> // ...<br>}</pre>
+
+<p class="western"><font face="Times New Roman, serif"><font size="3">Here's
+an example in VB:</font></font></p>
+
+<pre>Dim proxy As ITransportProxy<br>Dim encryptorVerifier As RSACipher<br>Dim signerDecryptor As RSACipher<br>Dim transport As SecureTransport<br>Dim myKeyStore As FolaighKeyStore<br>Dim myPassword As String<br><br>proxy = New MyWebServiceProxy<br><br>myKeyStore = New FolaighKeyStore("mykeyStore", "myPassword".ToCharArray)<br>encryptorVerifier = New RSACipher( _<br> myKeyStore, _<br> "serverKey", _<br> False)<br>signerDecryptor = New RSACipher( _<br> myKeyStore, _<br> "myKey", _<br> True)<br>transport = New SecureTransport(proxy, encryptorVerifier, signerDecryptor)</pre>
+
+<p class="western" style="">Once you've performed the steps outlined
+above, you simply call the SecureTransport's &ldquo;send&rdquo; method
+to send a call to the server. On the server side, you call the
+&ldquo;receive&rdquo; method to handle incoming calls.</p>
+
+<p class="western">That's it! Enjoy!</p>
+
+<p class="western" style="margin-bottom: 0in;"><b>Acknowledgments</b></p>
+
+<p class="western" style="margin-bottom: 0in;">Folaigh uses the Bouncy
+Castle Crypto Package for C# and Java. Specifically, Folaigh uses the
+RSA, SHA-256, AES and PKCS12 features provided by the package.</p>
+
+<p class="western" style="margin-bottom: 0in;">Thanks to Jason Weiss for
+his excellent book &ldquo;Java Cryptography Extension &ndash; Practical
+Guide for Programmers&rdquo; - ISBN: 0-12-742751-1.</p>
+
+<p class="western" style="margin-bottom: 0in;"><b>License</b></p>
+
+<p class="western" style="margin-bottom: 0in;">Copyright 2005
+Karmashave.org/Terry Lacy</p>
+
+<p class="western" style="margin-bottom: 0in;">This file is part of
+Folaigh.</p>
+
+<p class="western" style="margin-bottom: 0in;">Folaigh is free software;
+you can redistribute it and/or modify it under the terms of the GNU
+Lesser General Public License as published by the Free Software
+Foundation; either version 2.1 of the License, or (at your option) any
+later version.</p>
+
+<p class="western" style="margin-bottom: 0in;">Folaigh is distributed in
+the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE. See the GNU Lesser General Public License for more details.</p>
+
+<p class="western" style="margin-bottom: 0in;">You should have received
+a copy of the GNU Lesser General Public License along with Folaigh; if
+not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
+Floor, Boston, MA 02110-1301 USA</p>
+
+<p class="western" style="margin-bottom: 0in;"><br>
+
+</p>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+	<provider id="org.tigris.subversion.subclipse.core.svnnature">
+		<project reference="0.9.3,https://astarte.karmashave.org/repos/projects/Folaigh/BouncyCastle,BouncyCastle"/>
+		<project reference="0.9.3,https://astarte.karmashave.org/repos/projects/Folaigh/CryptoTest,CryptoTest"/>
+		<project reference="0.9.3,https://astarte.karmashave.org/repos/projects/Folaigh/FolaighDocumentation,FolaighDocumentation"/>
+		<project reference="0.9.3,https://astarte.karmashave.org/repos/projects/Folaigh/FolaighKeyManager,FolaighKeyManager"/>
+		<project reference="0.9.3,https://astarte.karmashave.org/repos/projects/Folaigh/FolaighKeyManagerTest,FolaighKeyManagerTest"/>
+		<project reference="0.9.3,https://astarte.karmashave.org/repos/projects/Folaigh/FolaighLib,FolaighLib"/>
+		<project reference="0.9.3,https://astarte.karmashave.org/repos/projects/Folaigh/FolaighLibTest,FolaighLibTest"/>
+		<project reference="0.9.3,https://astarte.karmashave.org/repos/projects/Folaigh/FolaighTestUtils,FolaighTestUtils"/>
+		<project reference="0.9.3,https://astarte.karmashave.org/repos/projects/Folaigh/Jemmy,Jemmy"/>
+	</provider>
+</psf>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/FolaighKeyManager"/>
+	<classpathentry kind="lib" path="/BouncyCastle/bcprov-jdk14-128.jar"/>
+	<classpathentry kind="var" path="JUNIT_HOME/junit.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/FolaighLib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/FolaighTestUtils"/>
+	<classpathentry kind="lib" path="/Jemmy/jemmy.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

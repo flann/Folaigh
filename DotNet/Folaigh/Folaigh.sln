@@ -1,0 +1,45 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FolaighKeyManager", "FolaighKeyManager\FolaighKeyManager.csproj", "{8425FFB3-0426-4B0E-B1D5-11136EFCB0A8}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FolaighLib", "FolaighLib\FolaighLib.csproj", "{82D27AC0-E0F2-4004-8873-D77A3CEB19D9}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FolaighLibTest", "FolaighLibTest\FolaighLibTest.csproj", "{7748F0E0-A411-4DE4-93AE-4B736AB5E459}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "FolaighSetup", "FolaighSetup\FolaighSetup.vdproj", "{AD770089-767C-4FA1-8D80-C52D2B47EF7E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{8425FFB3-0426-4B0E-B1D5-11136EFCB0A8}.Debug.ActiveCfg = Debug|.NET
+		{8425FFB3-0426-4B0E-B1D5-11136EFCB0A8}.Debug.Build.0 = Debug|.NET
+		{8425FFB3-0426-4B0E-B1D5-11136EFCB0A8}.Release.ActiveCfg = Release|.NET
+		{8425FFB3-0426-4B0E-B1D5-11136EFCB0A8}.Release.Build.0 = Release|.NET
+		{82D27AC0-E0F2-4004-8873-D77A3CEB19D9}.Debug.ActiveCfg = Debug|.NET
+		{82D27AC0-E0F2-4004-8873-D77A3CEB19D9}.Debug.Build.0 = Debug|.NET
+		{82D27AC0-E0F2-4004-8873-D77A3CEB19D9}.Release.ActiveCfg = Release|.NET
+		{82D27AC0-E0F2-4004-8873-D77A3CEB19D9}.Release.Build.0 = Release|.NET
+		{7748F0E0-A411-4DE4-93AE-4B736AB5E459}.Debug.ActiveCfg = Debug|.NET
+		{7748F0E0-A411-4DE4-93AE-4B736AB5E459}.Debug.Build.0 = Debug|.NET
+		{7748F0E0-A411-4DE4-93AE-4B736AB5E459}.Release.ActiveCfg = Release|.NET
+		{7748F0E0-A411-4DE4-93AE-4B736AB5E459}.Release.Build.0 = Release|.NET
+		{AD770089-767C-4FA1-8D80-C52D2B47EF7E}.Debug.ActiveCfg = Debug
+		{AD770089-767C-4FA1-8D80-C52D2B47EF7E}.Debug.Build.0 = Debug
+		{AD770089-767C-4FA1-8D80-C52D2B47EF7E}.Release.ActiveCfg = Release
+		{AD770089-767C-4FA1-8D80-C52D2B47EF7E}.Release.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
